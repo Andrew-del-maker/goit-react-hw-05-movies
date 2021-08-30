@@ -1,0 +1,9 @@
+.filmInfo {
+  display: flex;
+}
+
+.poster {
+  margin-right: 50px;
+  width: 300px;
+  display: block;
+}
