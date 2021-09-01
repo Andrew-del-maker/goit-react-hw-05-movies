@@ -6,7 +6,7 @@ export default function TrendeingItem({ trend }) {
         <li>
             <Link to={{
                 pathname: `/mouvies/${trend.id}`,
-                state: {from: location}
+                state: {backUrl: location.state}
             }}>{trend.name || trend.title}</Link>
         </li>
     )

@@ -5,12 +5,13 @@ import Cast from '../Cast/Cast'
 import Review from "../Review";
 import './style.css'
 
+
 const IMG_PATH='https://image.tmdb.org/t/p/w500'
 export default function MouviePage() {
     const [mouvie, setMouvie] = useState(null);
     const {movieId} = useParams();
     const { url } = useRouteMatch();
-    const location = useLocation();
+    const {state} = useLocation();
     const history = useHistory();
 
     useEffect(() => {
@@ -22,9 +23,9 @@ export default function MouviePage() {
             
         //     history.push(location.state.from);
         // }
-        history.push(location?.state?.from??'/')
+        state.search ? history.push({ pathname: state?.backUrl ?? '/', search: state.search }) : history.push({ pathname: state?.backUrl ?? '/' })
     };
-
+   
     return (
         mouvie && <div>
         <button type='button' onClick={onGoBack}>go back </button>
@@ -47,7 +48,7 @@ export default function MouviePage() {
             <h4>Additional information</h4>
             <ul>
                 <li>
-                    <NavLink to={`/mouvies/${movieId}/cast`}>Cast</NavLink>
+                    <NavLink to={{pathname:`/mouvies/${movieId}/cast`, state: { backUrl: `/mouvies/${movieId}/`}}} >Cast</NavLink>
                 </li>
                 <li>
                     <NavLink to={`${url}/reviews`}>Review</NavLink>
@@ -58,7 +59,7 @@ export default function MouviePage() {
         <hr/>
         <Switch>
             <Route path={`/mouvies/${movieId}/cast`}>
-                <Cast movieId={movieId} IMG={IMG_PATH} />
+                    <Cast movieId={movieId} IMG={IMG_PATH} />
             </Route>
             <Route path={`/mouvies/${movieId}/reviews`}>
                 <Review movieId={movieId} />

@@ -1,16 +1,17 @@
 import { getMouvies } from '../../Services/Api'
+import MovieSearch from '../../Components/MovieSearh'
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-
-const shortid = require('shortid');
+import { useHistory, useLocation } from 'react-router-dom'
+import qs from 'query-string'
 
 
 function Mouvie() {
-    const [mouvies, setMouvies] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [input, setInput] = useState('')
-    const location = useLocation();
     
+    const {pathname, search} = useLocation();
+    const [mouvies, setMouvies] = useState(null);
+    const [searchQuery, setSearchQuery] = useState(qs.parse(search)?.query ||'');
+    const [input, setInput] = useState('')
+    const history = useHistory();
     useEffect(() => {
         if (searchQuery!=='') {
             getMouvies(searchQuery).then(res => setMouvies(res.results))
@@ -21,6 +22,7 @@ function Mouvie() {
     const getQuery=(e)=> {
         e.preventDefault();
         setSearchQuery(input);
+        history.push({pathname, search: `?query=${input}`})
         setInput('');
     }
     const onInputChange = (e) => {
@@ -32,12 +34,7 @@ function Mouvie() {
                 <input type='text' placeholder='search film' onChange={onInputChange}></input>
                 <button type='submit'  >Search</button>
             </form>
-            {mouvies&& <ul>
-                {mouvies.map(mouvie => <li key={shortid.generate()}><Link to={{
-                pathname: `/mouvies/${mouvie.id}`,
-                state: {from: location}
-            }}>{mouvie.title}</Link></li>)}
-            </ul>}
+            {mouvies && <MovieSearch mouvies={mouvies} searchQuery={ searchQuery}/>}
         </>
     )
 }
