@@ -23,7 +23,7 @@ export default function MouviePage() {
             
         //     history.push(location.state.from);
         // }
-        state.search ? history.push({ pathname: state?.backUrl ?? '/', search: state.search }) : history.push({ pathname: state?.backUrl ?? '/' })
+        state ? history.push({ pathname: state?.backUrl ?? '/', search: state.search }) : history.push({ pathname: state?.backUrl ?? '/' })
     };
    
     return (
@@ -48,10 +48,10 @@ export default function MouviePage() {
             <h4>Additional information</h4>
             <ul>
                 <li>
-                    <NavLink to={{pathname:`/mouvies/${movieId}/cast`, state: { backUrl: `/mouvies/${movieId}/`}}} >Cast</NavLink>
+                    <NavLink to={{pathname:`${url}/cast`, state: { backUrl: url}}} >Cast</NavLink>
                 </li>
                 <li>
-                    <NavLink to={`${url}/reviews`}>Review</NavLink>
+                    <NavLink to={{pathname:`${url}/reviews`, state: { backUrl: url}}}>Review</NavLink>
                 </li>
                 
             </ul>
